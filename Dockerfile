@@ -1,12 +1,15 @@
-FROM alpine:3.3
+FROM node:6.9.1
 
-MAINTAINER Roman Tarnavski
+MAINTAINER Aleksandr Krutikov <aleksandr.krutikov@csssr.com>
 
-RUN apk add --update nginx
-
-COPY nginx.conf /etc/nginx/
-ADD ./dist/ /usr/share/nginx/html
+ADD . /swagger-ui
 
 EXPOSE 8080
 
-CMD nginx -g 'daemon off;'
+WORKDIR /swagger-ui
+
+RUN npm install -g gulp
+RUN npm config set unsafe-perm true
+RUN npm install
+
+CMD ["gulp", "serve"]
